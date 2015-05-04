@@ -1,0 +1,1 @@
+node /home/ubuntu/web/bigsales/private/server.js
