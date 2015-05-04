@@ -1,0 +1,56 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        title BigSales - Predictive Model For Stock Management
+
+        link(rel="stylesheet", href="static/css/bootstrap.min.css")
+        link(rel="stylesheet", href="static/css/main.css")
+
+    body
+        nav.navbar.navbar-default.navbar-static-top
+            div.container
+                .navbar-header
+                    a.navbar-brand(href="/") BigSales
+
+                ul.nav.navbar-nav
+                    li
+                        a(href="/") Inicio
+                    li
+                        a(href="/about-us") Quiénes Somos
+
+                ul.nav.navbar-nav.navbar-right
+                    li.active
+                        a(href="/signup") Registrarse
+                    li
+                        a(href="/login") Ingresar
+
+        section#singup_form
+
+            .container
+                h2.col-md-6.col-md-offset-3.text-center Inscríbase en BigSales
+
+                p.col-md-6.col-md-offset-3.text-justify.
+                    Está a un sólo paso de disfrutar nuestros servicios, que le permitirán
+                    sacarle el máximo provecho a sus inventarios y dejar de perder dinero por malas predicciones.
+
+                form.col-md-6.col-md-offset-3(action="/signup", method="POST")
+                    .form-group
+                        label(for="input-name") Ingrese su nombre
+                        input(type="text", class="form-control", name="inputName", id="input-name", placeholder="José Pérez")
+                    .form-group
+                        label(for="input-email") Ingrese su email
+                        input(type="email", class="form-control",  name="inputEmail", id="input-email", placeholder="jose@perez.com")
+                    .form-group
+                        label(for="input-password") Ingrese su contraseña
+                        input(type="password", class="form-control",  name="inputPassword", id="input-password")
+                    .form-group
+                        label(for="input-confirm-password") Confirme su contraseña
+                        input(type="password", class="form-control",  name="inputConfirmPassword", id="input-confirm-password")
+                    .form-group
+                        button(type="submit", class="btn btn-default") Enviar
+
+        script(src="https://fb.me/react-0.13.2.js")
+        //script(src="static/js/main.js")

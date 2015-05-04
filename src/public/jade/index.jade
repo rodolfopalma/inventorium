@@ -6,14 +6,26 @@ html
         meta(name="viewport", content="width=device-width, initial-scale=1")
         title BigSales - Predictive Model For Stock Management
 
-        link(rel="stylesheet", href="css/bootstrap.min.css")
-        link(rel="stylesheet", href="css/main.css")
+        link(rel="stylesheet", href="static/css/bootstrap.min.css")
+        link(rel="stylesheet", href="static/css/main.css")
 
     body
         nav.navbar.navbar-default.navbar-static-top
             div.container
-                p.navbar-text.
-                    BigSales
+                .navbar-header
+                    a.navbar-brand(href="/") BigSales
+
+                ul.nav.navbar-nav
+                    li.active
+                        a(href="/") Inicio
+                    li
+                        a(href="/about-us") Quiénes Somos
+
+                ul.nav.navbar-nav.navbar-right
+                    li
+                        a(href="/signup") Registrarse
+                    li
+                        a(href="/login") Ingresar
 
         section#landing_jumbotron.jumbotron
             div.container
@@ -30,8 +42,8 @@ html
                         tendrá en el futuro.
                 .row
                     p.col-md-6.button
-                        a.btn.btn-default.btn-xl(role="button", href="#").
-                            Iniciar Prueba Ahora
+                        a.btn.btn-default.btn-xl(role="button", href="/signup").
+                            Iniciar Prueba Gratis
 
         section#features
             div.container
@@ -75,4 +87,4 @@ html
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam incidunt sed quibusdam, necessitatibus quasi officia. Amet, corporis labore officiis itaque deserunt tempora facere asperiores unde vero, praesentium quaerat, soluta dolor.
 
         script(src="https://fb.me/react-0.13.2.js")
-        //script(src="js/main.js")
+        //script(src="static/js/main.js")

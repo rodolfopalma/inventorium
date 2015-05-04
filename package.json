@@ -5,7 +5,8 @@
   "author": "Rodolfo Palma Otero",
   "license": "MIT",
   "dependencies": {
-    "express": "*"
+    "express": "*",
+    "body-parser": "^1.12.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
