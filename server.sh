@@ -1,2 +1,3 @@
 #!/bin/sh
-node /home/ubuntu/web/bigsales/private/server.js
+cd /home/ubuntu/web/bigsales
+node private/server.js
