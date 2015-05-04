@@ -1,13 +1,21 @@
 doctype html
 html
     head
-        meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
         title BigSales
 
-        link(rel="stylesheet", href="css/reset.css")
+        link(rel="stylesheet", href="css/bootstrap.min.css")
+        link(rel="stylesheet", href="css/main.css")
 
     body
-        div#wrapper
+        nav.navbar.navbar-default.navbar-static-top
+            div.container
+                p.navbar-text.
+                    BigSales
 
-        script(src="https://fb.me/react-0.13.2.min.js")
+        section#landing_jumbotron.jumbotron
+
+        script(src="https://fb.me/react-0.13.2.js")
         script(src="js/main.js")

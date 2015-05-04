@@ -16,6 +16,6 @@
     "grunt-nodemon": "0.2.x",
     "grunt-concurrent": "0.5.x",
     "grunt-contrib-copy": "^0.5.0",
-    "grunt-react": "^0.12.2"
+    "grunt-react": "^0.12.2",
   }
 }

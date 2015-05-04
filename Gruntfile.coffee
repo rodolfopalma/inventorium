@@ -18,23 +18,23 @@ module.exports = (grunt) ->
 
 		watch:
 			coffeePublic:
-				files: ['src/public/coffee/*.coffee']
+				files: ['src/public/coffee/*']
 				tasks: ['coffee:public']
 
 			coffeePrivate:
-				files: 'src/private/*.coffee'
+				files: 'src/private/*'
 				tasks: ['coffee:private']
 
 			jade:
-				files: 'src/public/jade/*.jade'
+				files: 'src/public/jade/*'
 				tasks: ['jade:compile']
 
 			stylus:
-				files: 'src/public/stylus/*.styl'
+				files: 'src/public/stylus/*'
 				tasks: ['stylus:compile']
 
 			react:
-				files: 'src/public/jsx/*.jsx'
+				files: 'src/public/jsx/*'
 				tasks: ['react:compile']
 
 			livereload:
@@ -46,13 +46,13 @@ module.exports = (grunt) ->
 			public:
 				expand: true
 				flatten: true
-				src: '<%= watch.coffeePublic.files %>'
+				src: '<%= watch.coffeePublic.files %>.coffee'
 				dest: 'public/js'
-				ext: '.js'					
+				ext: '.js'
 			private:
 				expand: true
 				flatten: true
-				src: '<%= watch.coffeePrivate.files %>'
+				src: '<%= watch.coffeePrivate.files %>.coffee'
 				dest: 'private'
 				ext: '.js'
 
@@ -60,7 +60,7 @@ module.exports = (grunt) ->
 			compile:
 				expand: true
 				flatten: true
-				src: '<%= watch.jade.files %>'
+				src: '<%= watch.jade.files %>.jade'
 				dest: 'public'
 				ext: '.html'
 
@@ -68,16 +68,16 @@ module.exports = (grunt) ->
 			compile:
 				expand: true
 				flatten: true
-				src: '<%= watch.stylus.files %>'
+				src: '<%= watch.stylus.files %>.styl'
 				dest: 'public/css'
 				ext: '.css'
 
 		react:
-			compile: 
+			compile:
 				files: [
 					expand: true
-					cwd: "src/public/jsx"
-					src: "*.jsx"
+					flatten: true
+					src: "<%= watch.react.files %>.jsx"
 					dest: "public/js"
 					ext: ".js"
 				]
@@ -91,14 +91,23 @@ module.exports = (grunt) ->
 				files: [
 					{expand: true, flatten: true, src: 'src/assets/css/*', dest: 'public/css/'},
 					{expand: true, flatten: true, src: 'src/assets/js/*', dest: 'public/js/'},
-					{expand: true, flatten: true, src: 'src/assets/i/*', dest: 'public/i/'}					
+					{expand: true, flatten: true, src: 'src/assets/i/*', dest: 'public/i/'},
+					{expand: true, flatten: true, src: 'src/assets/fonts/*', dest: 'public/fonts/'}
 				]
 
 	grunt.registerTask('default', [
-		'coffee:private', 
+		'coffee:private',
 		'coffee:public',
 		'react:compile',
-		'jade:compile', 
+		'jade:compile',
 		'stylus:compile',
-		'copy:src', 
+		'copy:src',
 		'concurrent:dev'])
+
+	grunt.registerTask('build', [
+		'coffee:private',
+		'coffee:public',
+		'react:compile',
+		'jade:compile',
+		'stylus:compile',
+		'copy:src'])
