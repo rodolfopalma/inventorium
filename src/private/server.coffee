@@ -10,7 +10,7 @@ app.use '/static/i', express.static 'public/i'
 app.use '/static/js', express.static 'public/js'
 
 # Parsear POST headers
-app.use bodyParser.urlencoded({extended: true})
+app.use bodyParser.urlencoded({extended: false})
 
 app.get '/', (req, res) ->
     res.sendFile 'index.html', {root: path.join(__dirname, "../public")}
