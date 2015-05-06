@@ -22,7 +22,7 @@ app.post '/signup', (req, res) ->
     console.log req.body
     res.redirect '/thanks'
 
-app.get '/thanks-buddy', (req, res) ->
+app.get '/thanks', (req, res) ->
     res.sendFile 'thanks.html', {root: path.join(__dirname, "../public")}
 
 app.get '/login', (req, res) ->
