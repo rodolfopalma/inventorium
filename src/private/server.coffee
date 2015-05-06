@@ -1,4 +1,5 @@
 express = require 'express'
+morgan = require 'morgan'
 bodyParser = require 'body-parser'
 path = require 'path'
 app = do express
@@ -9,21 +10,28 @@ app.use '/static/fonts', express.static 'public/fonts'
 app.use '/static/i', express.static 'public/i'
 app.use '/static/js', express.static 'public/js'
 
+# Jade
+app.set 'views', path.join(__dirname, "../src/public/jade")
+app.set 'view engine', 'jade'
+
+# Logger
+app.use morgan('combined')
+
 # Parsear POST headers
 app.use bodyParser.urlencoded({extended: false})
 
 app.get '/', (req, res) ->
-    res.sendFile 'index.html', {root: path.join(__dirname, "../public")}
+    res.render 'index'
 
 app.get '/signup', (req, res) ->
-    res.sendFile 'signup.html', {root: path.join(__dirname, "../public")}
+    res.render 'signup'
 
 app.post '/signup', (req, res) ->
     console.log req.body
     res.redirect '/thanks'
 
 app.get '/thanks', (req, res) ->
-    res.sendFile 'thanks.html', {root: path.join(__dirname, "../public")}
+    res.render 'thanks'
 
 app.get '/login', (req, res) ->
     res.redirect('/')

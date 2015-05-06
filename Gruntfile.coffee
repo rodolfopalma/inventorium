@@ -1,7 +1,6 @@
 module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	grunt.loadNpmTasks 'grunt-react'
-	grunt.loadNpmTasks 'grunt-contrib-jade'
 	grunt.loadNpmTasks 'grunt-contrib-stylus'
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 	grunt.loadNpmTasks 'grunt-concurrent'
@@ -25,10 +24,6 @@ module.exports = (grunt) ->
 				files: 'src/private/*'
 				tasks: ['coffee:private']
 
-			jade:
-				files: 'src/public/jade/*'
-				tasks: ['jade:compile']
-
 			stylus:
 				files: 'src/public/stylus/*'
 				tasks: ['stylus:compile']
@@ -40,7 +35,7 @@ module.exports = (grunt) ->
 			livereload:
 				options:
 					livereload: true
-				files: ['public/**/*', 'private/**/*']
+				files: ['public/**/*', 'private/**/*', 'src/public/jade/**/*']
 
 		coffee:
 			public:
@@ -55,14 +50,6 @@ module.exports = (grunt) ->
 				src: '<%= watch.coffeePrivate.files %>.coffee'
 				dest: 'private'
 				ext: '.js'
-
-		jade:
-			compile:
-				expand: true
-				flatten: true
-				src: '<%= watch.jade.files %>.jade'
-				dest: 'public'
-				ext: '.html'
 
 		stylus:
 			compile:
@@ -99,7 +86,6 @@ module.exports = (grunt) ->
 		'coffee:private',
 		'coffee:public',
 		'react:compile',
-		'jade:compile',
 		'stylus:compile',
 		'copy:src',
 		'concurrent:dev'])
@@ -108,6 +94,5 @@ module.exports = (grunt) ->
 		'coffee:private',
 		'coffee:public',
 		'react:compile',
-		'jade:compile',
 		'stylus:compile',
 		'copy:src'])
