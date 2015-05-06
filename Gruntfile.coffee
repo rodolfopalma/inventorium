@@ -21,7 +21,7 @@ module.exports = (grunt) ->
 				tasks: ['coffee:public']
 
 			coffeePrivate:
-				files: 'src/private/*'
+				files: 'src/private/**/*'
 				tasks: ['coffee:private']
 
 			stylus:
@@ -44,11 +44,12 @@ module.exports = (grunt) ->
 				src: '<%= watch.coffeePublic.files %>.coffee'
 				dest: 'public/js'
 				ext: '.js'
+			# try to reuse watch config files
 			private:
 				expand: true
-				flatten: true
-				src: '<%= watch.coffeePrivate.files %>.coffee'
+				src: '**/*.coffee'
 				dest: 'private'
+				cwd: 'src/private'
 				ext: '.js'
 
 		stylus:
