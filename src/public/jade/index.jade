@@ -13,19 +13,24 @@ html
         nav.navbar.navbar-default.navbar-static-top
             div.container
                 .navbar-header
+                    button(type="button", class="navbar-toggle collapsed", data-toggle="collapse", data-target="#navbar-collapse")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
                     a.navbar-brand(href="/") BigSales
 
-                ul.nav.navbar-nav
-                    li.active
-                        a(href="/") Inicio
-                    li
-                        a(href="/about-us") Quiénes Somos
+                .collapse.navbar-collapse#navbar-collapse
+                    ul.nav.navbar-nav
+                        li.active
+                            a(href="/") Inicio
+                        li
+                            a(href="/about-us") Quiénes Somos
 
-                ul.nav.navbar-nav.navbar-right
-                    li
-                        a(href="/signup") Registrarse
-                    li
-                        a(href="/login") Ingresar
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href="/signup") Registrarse
+                        li
+                            a(href="/login") Ingresar
 
         section#landing_jumbotron.jumbotron
             div.container
@@ -86,5 +91,7 @@ html
                         p.
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam incidunt sed quibusdam, necessitatibus quasi officia. Amet, corporis labore officiis itaque deserunt tempora facere asperiores unde vero, praesentium quaerat, soluta dolor.
 
+        script(src="https://code.jquery.com/jquery-2.1.4.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
         script(src="https://fb.me/react-0.13.2.js")
         //script(src="static/js/main.js")
