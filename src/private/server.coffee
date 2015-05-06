@@ -20,7 +20,10 @@ app.get '/signup', (req, res) ->
 
 app.post '/signup', (req, res) ->
     console.log req.body
-    res.redirect '/'
+    res.redirect '/thanks'
+
+app.get '/thanks', (req, res) ->
+    res.sendFile 'thanks.html', {root: path.join(__dirname, "../public")}
 
 app.get '/login', (req, res) ->
     res.redirect('/')

@@ -1,6 +1,6 @@
 # BigSales
 ## To Do
-+ Navbar colapsable
++ ~~Navbar colapsable~~
 + Guardar datos de registro
 + Arreglar reinicio de servidor en push
 + Crear página de login

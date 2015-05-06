@@ -1,4 +1,4 @@
 *.ini
 node_modules
-./private/
-./public/
+private/
+public/
