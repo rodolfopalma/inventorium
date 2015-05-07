@@ -78,13 +78,10 @@ app.post '/signup', (req, res) ->
 
     if name == ""
         invalidFields.push 'inputName'
-        console.log 'name'
     if !validEmail email
         invalidFields.push 'inputEmail'
-        console.log 'mail'
-    if !(password == confirmPassword)
+    if !(password == confirmPassword) || password.length == 0
         invalidFields.push 'inputPassword'
-        console.log 'psswd'
 
     if invalidFields.length > 0
         res.render 'signup', invalidFields: invalidFields
