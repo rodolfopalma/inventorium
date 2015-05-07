@@ -2,7 +2,6 @@ express       = require 'express'
 path          = require 'path'
 morgan        = require 'morgan'
 bodyParser    = require 'body-parser'
-cookieParser  = require 'cookie-parser'
 session       = require 'express-session'
 connectFlash  = require 'connect-flash'
 passport      = require 'passport'
@@ -29,8 +28,11 @@ app.use morgan('dev')
 app.use bodyParser.urlencoded({extended: false})
 
 # Sessions and flash data
-app.use cookieParser 'secret'
-app.use session cookie: maxAge: 60000
+app.use session(
+    cookie:
+        maxAge: 60000
+    secret: "easy money"
+)
 app.use connectFlash()
 
 # Setup db
