@@ -33,19 +33,15 @@ module.exports.saveUser = (user, cb) ->
                 cb err
             else
                 console.log "[DB] New user inserted succesfully."
-                cb null, result.inserted == 1
-
-            do conn.close
+                cb null, result.inserted == 1, result.generated_keys[0]
 
 module.exports.findUserByEmail = (email, cb) ->
     connectDb (err, conn) ->
         findUserByFilter conn, email: email, cb
-        do conn.close
 
 module.exports.findUserById = (id, cb) ->
     connectDb (err, conn) ->
         findUserByFilter conn, id: id, cb
-        do conn.close
 
 findUserByFilter = (conn, filterObject, cb) ->
     rdb.db(dbConfig.db).table('users').filter(filterObject).limit(1).run conn, (err, cursor) ->
@@ -59,7 +55,7 @@ findUserByFilter = (conn, filterObject, cb) ->
                     cb null
                 # Success
                 else
-                    cb null, user
+                    cb null, row
 
 
 ###*

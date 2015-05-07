@@ -40,7 +40,10 @@ db.setup()
 app.use passport.initialize()
 app.use passport.session()
 
-passport.use new localPassport (email, password, done) ->
+passport.use new localPassport {
+        usernameField: 'inputEmail'
+        passwordField: 'inputPassword'
+    }, (email, password, done) ->
     db.findUserByEmail email, (err, user) ->
         # Database error
         if err
@@ -63,10 +66,20 @@ passport.deserializeUser (id, done) ->
     db.findUserById id, (err, user) ->
         done err, user
 
+# Middleware to add render data
+app.use (req, res, next) ->
+    res.locals.user = req.user
+    do next
+
 app.get '/', (req, res) ->
     res.render 'index'
 
 app.get '/signup', (req, res) ->
+    console.log req.user
+    if typeof req.user != 'undefined'
+        res.redirect '/dashboard'
+        return
+
     res.render 'signup'
 
 app.post '/signup', (req, res) ->
@@ -92,20 +105,44 @@ app.post '/signup', (req, res) ->
             email: email
             password: bcrypt.hashSync password, 8
 
-        db.saveUser user, (err, success) ->
+        db.saveUser user, (err, success, id) ->
             if success
-                req.flash 'firstName', name.split(" ")[0]
-                res.redirect '/thanks'
-                return
+                user["id"] = id
+                req.login user, (err) ->
+                    req.flash 'firstName', name.split(" ")[0]
+                    res.redirect '/thanks'
+                    return
             else
-                console.log 'servererror'
                 res.render 'signup', serverError: true
                 return
+
+app.get '/login', (req, res) ->
+    console.log req.user
+    if typeof req.user != 'undefined'
+        res.redirect '/dashboard'
+        return
+
+    res.render 'login'
+
+app.post '/login', passport.authenticate 'local', {
+    successRedirect: '/dashboard'
+    failureRedirect: '/login',
+    failureFlash: true
+}
 
 app.get '/thanks', (req, res) ->
     res.render 'thanks', name: req.flash("firstName")
 
-app.get '/login', (req, res) ->
+app.get '/dashboard', (req, res) ->
+    console.log req.user
+    if typeof req.user == 'undefined'
+        res.redirect '/login'
+        return
+
+    res.render 'dashboard'
+
+app.get '/logout', (req, res) ->
+    do req.logout
     res.redirect '/'
 
 app.get '/about-us', (req, res) ->

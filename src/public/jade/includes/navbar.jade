@@ -11,11 +11,22 @@ nav.navbar.navbar-default.navbar-static-top
             ul.nav.navbar-nav
                 li
                     a(href="/") Inicio
+                li.divider
                 li
                     a(href="/about-us") Quiénes Somos
 
             ul.nav.navbar-nav.navbar-right
-                li
-                    a(href="/signup") Registrarse
-                li
-                    a(href="/login") Ingresar
+                if user
+                    li.dropdown
+                        a.dropdown-toggle(href="#", data-toggle="dropdown", role="button") #{user.name} <span class="caret"></span>
+                        ul.dropdown-menu(role="menu")
+                            li
+                                a(href="/dashboard") Dashboard
+                            li.divider
+                            li
+                                a(href="/logout") Salir
+                else
+                    li
+                        a(href="/signup") Registrarse
+                    li
+                        a(href="/login") Ingresar
