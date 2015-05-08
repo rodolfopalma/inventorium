@@ -32,6 +32,8 @@ app.use session(
     cookie:
         maxAge: 60000
     secret: "easy money"
+    saveUninitialized: false
+    resave: false
 )
 app.use connectFlash()
 
