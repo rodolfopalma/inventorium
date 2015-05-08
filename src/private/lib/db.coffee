@@ -1,4 +1,5 @@
-rdb = require 'rethinkdb'
+rdb         = require 'rethinkdb'
+rdbStoreLib = require 'express-session-rethinkdb'
 
 dbConfig =
     host   : process.env.RDB_HOST || 'localhost'
@@ -6,6 +7,8 @@ dbConfig =
     db     : process.env.RDB_DB || 'bigsalesWeb'
     tables :
         users: 'id'
+        predictions: 'id'
+        sessions: 'id'
 
 ###*
  * Connect to RethinkDB instance and perform basic database setup.
@@ -21,9 +24,22 @@ module.exports.setup = ->
             for table, key of dbConfig.tables
                 rdb.db(dbConfig.db).tableCreate(table, {primaryKey: key}).run conn, (err, result) ->
                     if err
-                        console.log "[DB] RethinkDB table " + table + " already exists."
+                        console.log "[DB] " + err.msg
                     else
                         console.log "[DB] RethinkDB table " + table + " created."
+
+module.exports.getSessionStore = (session) ->
+    rdbStore = rdbStoreLib session
+
+    return new rdbStore {
+        connectOptions:
+            db: dbConfig.db
+            host: dbConfig.host
+            port: dbConfig.port
+        table: 'sessions'
+        sessionTimeout: 86400000
+        flushInterval: 60000
+    }
 
 module.exports.saveUser = (user, cb) ->
     connectDb (err, conn) ->
@@ -57,6 +73,27 @@ findUserByFilter = (conn, filterObject, cb) ->
                 else
                     cb null, row
 
+module.exports.savePrediction = (prediction, cb) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('predictions').insert(prediction).run conn, (err, result) ->
+            if err
+                console.log "[DB] Couldn't save prediction."
+                cb err
+            else
+                console.log "[DB] New prediction inserted succesfully."
+                cb null, result.inserted == 1, result.generated_keys[0]
+
+module.exports.getPredictionsByUserId = (userId, cb) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('predictions').eqJoin('ownerId', rdb.db(dbConfig.db).table('users')).run conn, (err, cursor) ->
+            if err
+                cb err
+            else
+                cursor.toArray (err, results) ->
+                    if err
+                        cb err
+                    else
+                        cb null, results
 
 ###*
  * Wrapper function for RethinkDB API `rdb.connect` method

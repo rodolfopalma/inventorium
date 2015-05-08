@@ -1,8 +1,9 @@
 express       = require 'express'
 path          = require 'path'
 morgan        = require 'morgan'
-bodyParser    = require 'body-parser'
 session       = require 'express-session'
+bodyParser    = require 'body-parser'
+multer        = require 'multer'
 connectFlash  = require 'connect-flash'
 passport      = require 'passport'
 localPassport = require 'passport-local'
@@ -24,9 +25,6 @@ app.set 'view engine', 'jade'
 # Logger
 app.use morgan('dev')
 
-# Parse POST headers
-app.use bodyParser.urlencoded({extended: false})
-
 # Sessions and flash data
 app.use session(
     cookie:
@@ -34,6 +32,8 @@ app.use session(
     secret: "easy money"
     saveUninitialized: false
     resave: false
+    store: db.getSessionStore session
+    maxAge: new Date(Date.now() + 3600000)
 )
 app.use connectFlash()
 
@@ -73,6 +73,7 @@ passport.deserializeUser (id, done) ->
 # Middleware to add render data
 app.use (req, res, next) ->
     res.locals.user = req.user
+    res.locals.baseUrl = req.protocol + '://' + req.get('host')
     do next
 
 app.get '/', (req, res) ->
@@ -86,7 +87,7 @@ app.get '/signup', (req, res) ->
 
     res.render 'signup'
 
-app.post '/signup', (req, res) ->
+app.post '/signup', bodyParser.urlencoded(extended: false), (req, res) ->
     name            = req.body.inputName
     email           = req.body.inputEmail
     password        = req.body.inputPassword
@@ -128,7 +129,7 @@ app.get '/login', (req, res) ->
 
     res.render 'login'
 
-app.post '/login', passport.authenticate 'local', {
+app.post '/login', bodyParser.urlencoded(extended: false), passport.authenticate 'local', {
     successRedirect: '/dashboard'
     failureRedirect: '/login',
     failureFlash: true
@@ -142,8 +143,23 @@ app.get '/dashboard', (req, res) ->
     if typeof req.user == 'undefined'
         res.redirect '/login'
         return
+    
+    db.getPredictionsByUserId req.user.id, (err, predictions) ->
+        console.log predictions
+        res.render 'dashboard', predictions: predictions
 
-    res.render 'dashboard'
+app.get '/prediccion/crear', (req, res) ->
+    res.render 'prediccion/crear'
+
+app.post '/prediccion/crear', multer(dest: path.join(__dirname, '../../', 'uploads')), (req, res) ->
+    console.log req.files
+    prediction =
+        name: req.body.inputName
+        ownerId: req.user.id
+        status: 'pending'
+        filePath: req.files.inputFile.path
+    db.savePrediction prediction, (err, success, id) ->
+        res.redirect '/dashboard'
 
 app.get '/logout', (req, res) ->
     do req.logout

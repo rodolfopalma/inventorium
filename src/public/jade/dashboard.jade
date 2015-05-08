@@ -6,8 +6,23 @@ html
     body
         include ./includes/navbar.jade
 
-        section
+        section#dashboard
             .container
-                h1.col-md-12 Seems you're logged in...
+                h1 Predicciones
+                
+                .row
+                    each prediction, i in predictions
+                        .col-md-3
+                            .cell-wrapper
+                                h3 #{prediction.left.name}
+                                .cell-content
+                                    if prediction.left.status == "pending"
+                                        span.text-info.
+                                            La predicción aún está siendo procesada.
+
+                    .col-md-3
+                        .cell-wrapper
+                            .cell-content.
+                                Haz click <a href="/prediccion/crear">aquí</a> para crear una predicción.
 
         include ./includes/scripts.jade

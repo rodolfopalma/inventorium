@@ -1,3 +1,5 @@
 *.ini
 node_modules
+*.swp
+*.un~
 

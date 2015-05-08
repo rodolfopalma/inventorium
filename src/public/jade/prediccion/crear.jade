@@ -1,0 +1,32 @@
+doctype html
+html
+    head
+        include ../includes/head.jade
+
+    body
+        include ../includes/navbar.jade
+
+        section#crear_prediccion_form
+
+            .container
+                h2.col-md-6.col-md-offset-3.text-center Crear Predicción
+
+                form.col-md-6.col-md-offset-3(action="#{baseUrl}/prediccion/crear", method="POST", enctype="multipart/form-data")
+                    .form-group
+                        label(for="input-name") Nombre de predicción
+                        input.form-control(type="text", id="input-name", name="inputName", placeholder="Zapatos Café")
+
+                    .form-group
+                        label(for="input-file") Planilla con datos de ventas
+                        input(type="file", id="input-file", name="inputFile")
+                        p.help-block.
+                            Una planilla debe tener dos columnas: la
+                            primera contendrá la información de cuando
+                            se realizó la venta (ej: 08/05/2015) y la
+                            segunda el número entero de elementos
+                            vendidos.
+                    
+                    .form-group
+                        button(type="submit", class="btn btn-default") Crear
+
+        include ../includes/scripts.jade
