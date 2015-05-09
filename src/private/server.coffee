@@ -1,6 +1,7 @@
 express       = require 'express'
 path          = require 'path'
 morgan        = require 'morgan'
+cookieParser  = require 'cookie-parser'
 session       = require 'express-session'
 bodyParser    = require 'body-parser'
 multer        = require 'multer'
@@ -26,14 +27,16 @@ app.set 'view engine', 'jade'
 app.use morgan('dev')
 
 # Sessions and flash data
+app.use cookieParser()
 app.use session(
     cookie:
-        maxAge: 60000
+        maxAge: 1000 * 60 * 60 * 24 * 31
     secret: "easy money"
     saveUninitialized: false
     resave: false
     store: db.getSessionStore session
-    maxAge: new Date(Date.now() + 3600000)
+    maxAge: new Date(Date.now() + 1000 * 60 * 60 * 24 * 31)
+    rolling: true
 )
 app.use connectFlash()
 
@@ -80,7 +83,6 @@ app.get '/', (req, res) ->
     res.render 'index'
 
 app.get '/signup', (req, res) ->
-    console.log req.user
     if typeof req.user != 'undefined'
         res.redirect '/dashboard'
         return
@@ -122,7 +124,6 @@ app.post '/signup', bodyParser.urlencoded(extended: false), (req, res) ->
                 return
 
 app.get '/login', (req, res) ->
-    console.log req.user
     if typeof req.user != 'undefined'
         res.redirect '/dashboard'
         return
@@ -139,20 +140,17 @@ app.get '/thanks', (req, res) ->
     res.render 'thanks', name: req.flash("firstName")
 
 app.get '/dashboard', (req, res) ->
-    console.log req.user
     if typeof req.user == 'undefined'
         res.redirect '/login'
         return
     
     db.getPredictionsByUserId req.user.id, (err, predictions) ->
-        console.log predictions
         res.render 'dashboard', predictions: predictions
 
 app.get '/prediccion/crear', (req, res) ->
     res.render 'prediccion/crear'
 
-app.post '/prediccion/crear', multer(dest: path.join(__dirname, '../../', 'uploads')), (req, res) ->
-    console.log req.files
+app.post '/prediccion/crear', multer(dest: path.join(__dirname, '../', 'uploads')), (req, res) ->
     prediction =
         name: req.body.inputName
         ownerId: req.user.id

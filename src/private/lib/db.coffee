@@ -26,7 +26,7 @@ module.exports.setup = ->
                     if err
                         console.log "[DB] " + err.msg
                     else
-                        console.log "[DB] RethinkDB table " + table + " created."
+                        console.log "[DB] " + result.config_changes[0].new_val.name + " table created."
 
 module.exports.getSessionStore = (session) ->
     rdbStore = rdbStoreLib session
@@ -37,8 +37,6 @@ module.exports.getSessionStore = (session) ->
             host: dbConfig.host
             port: dbConfig.port
         table: 'sessions'
-        sessionTimeout: 86400000
-        flushInterval: 60000
     }
 
 module.exports.saveUser = (user, cb) ->
