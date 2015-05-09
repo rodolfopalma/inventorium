@@ -117,7 +117,7 @@ app.post '/signup', bodyParser.urlencoded(extended: false), (req, res) ->
                 user["id"] = id
                 req.login user, (err) ->
                     req.flash 'firstName', name.split(" ")[0]
-                    res.redirect '/thanks'
+                    res.redirect '/dashboard'
                     return
             else
                 res.render 'signup', serverError: true
