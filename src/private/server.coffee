@@ -145,6 +145,7 @@ app.get '/dashboard', (req, res) ->
         return
     
     db.getPredictionsByUserId req.user.id, (err, predictions) ->
+        console.log "predictions: ", predictions
         res.render 'dashboard', predictions: predictions
 
 app.get '/prediccion/crear', (req, res) ->

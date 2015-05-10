@@ -83,7 +83,7 @@ module.exports.savePrediction = (prediction, cb) ->
 
 module.exports.getPredictionsByUserId = (userId, cb) ->
     connectDb (err, conn) ->
-        rdb.db(dbConfig.db).table('predictions').eqJoin('ownerId', rdb.db(dbConfig.db).table('users')).run conn, (err, cursor) ->
+        rdb.db(dbConfig.db).table('predictions').filter(ownerId: userId).run conn, (err, cursor) ->
             if err
                 cb err
             else
