@@ -76,7 +76,7 @@ passport.deserializeUser (id, done) ->
 # Middleware to add render data
 app.use (req, res, next) ->
     res.locals.user = req.user
-    res.locals.baseUrl = req.protocol + '://' + req.get('host')
+    res.locals.baseUrl = 'https://' + req.get('host')
     do next
 
 app.get '/', (req, res) ->
