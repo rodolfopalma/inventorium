@@ -79,6 +79,13 @@ app.use (req, res, next) ->
     res.locals.baseUrl = 'https://' + req.get('host')
     do next
 
+# Middleware to ensure https:// is being used
+app.use (req, res, next) ->
+    if req.secure
+        do next
+        return
+    res.redirect 'https://' + req.headers.host + req.url
+
 app.get '/', (req, res) ->
     res.render 'index'
 
