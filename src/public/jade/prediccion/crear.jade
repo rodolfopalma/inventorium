@@ -20,12 +20,10 @@ html
                         label(for="input-file") Planilla con datos de ventas
                         input(type="file", id="input-file", name="inputFile")
                         p.help-block.
-                            Una planilla debe tener dos columnas: la
-                            primera contendrá la información de cuando
-                            se realizó la venta (ej: 08/05/2015) y la
-                            segunda el número entero de elementos
-                            vendidos.
-                    
+                            La planilla debe tener una sola columna de información,
+                            la primera fila debe tener el valor ´Ventas´ y el resto
+                            de las filas deben contener los valores de las demandas
+                            mensuales del producto.
                     .form-group
                         button(type="submit", class="btn btn-default") Crear
 

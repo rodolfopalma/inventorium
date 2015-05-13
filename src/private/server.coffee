@@ -10,6 +10,8 @@ passport      = require 'passport'
 localPassport = require 'passport-local'
 bcrypt        = require 'bcryptjs'
 db            = require './lib/db'
+rInterface    = require('./lib/r-interface')
+
 app           = do express
 port          = process.env.port || 2000
 
@@ -76,7 +78,8 @@ passport.deserializeUser (id, done) ->
 # Middleware to add render data
 app.use (req, res, next) ->
     res.locals.user = req.user
-    res.locals.baseUrl = 'https://' + req.get('host')
+    #res.locals.baseUrl = 'https://' + req.get('host')
+    res.locals.baseUrl = 'http://' + req.get('host')
     do next
 
 # Middleware to ensure https:// is being used
@@ -152,7 +155,6 @@ app.get '/dashboard', (req, res) ->
         return
     
     db.getPredictionsByUserId req.user.id, (err, predictions) ->
-        console.log "predictions: ", predictions
         res.render 'dashboard', predictions: predictions
 
 app.get '/prediccion/crear', (req, res) ->
@@ -164,9 +166,20 @@ app.post '/prediccion/crear', multer(dest: path.join(__dirname, '../', 'uploads'
         ownerId: req.user.id
         status: 'pending'
         filePath: req.files.inputFile.path
-    db.savePrediction prediction, (err, success, id) ->
-        res.redirect '/dashboard'
 
+    db.savePrediction prediction, (err, success, id) ->
+        if success
+            rInterface.getHoltWintersPrediction(id, prediction.filePath, db.updatePredictionStatus)
+            res.redirect '/dashboard'
+
+app.get '/prediccion/:id', (req, res) ->
+    db.getPredictionById req.params.id, (err, prediction) ->
+        if prediction.ownerId != req.user.id || prediction.status == "pending"
+            res.redirect '/dashboard'
+            return
+        
+        res.download prediction.results.resultsPath
+    
 app.get '/logout', (req, res) ->
     do req.logout
     res.redirect '/'

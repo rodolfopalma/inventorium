@@ -16,3 +16,4 @@
 + Manejo de errores cuando hay input de usuarios
 + Manejo de errores cuando hay errores en db
 + Revisar dependencias
++ ReactJS

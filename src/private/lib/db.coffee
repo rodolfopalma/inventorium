@@ -56,20 +56,10 @@ module.exports.findUserByEmail = (email, cb) ->
 module.exports.findUserById = (id, cb) ->
     connectDb (err, conn) ->
         findUserByFilter conn, id: id, cb
-
+        
 findUserByFilter = (conn, filterObject, cb) ->
-    rdb.db(dbConfig.db).table('users').filter(filterObject).limit(1).run conn, (err, cursor) ->
-        # Database runtime error
-        if err
-            cb err
-        else
-            cursor.next (err, row) ->
-                # No user matched
-                if err
-                    cb null
-                # Success
-                else
-                    cb null, row
+    findElemByFilter(conn, 'users', filterObject, cb)
+
 
 module.exports.savePrediction = (prediction, cb) ->
     connectDb (err, conn) ->
@@ -93,6 +83,18 @@ module.exports.getPredictionsByUserId = (userId, cb) ->
                     else
                         cb null, results
 
+module.exports.updatePredictionStatus = (id, values) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('predictions').filter(id: id).update(status: "done", results: values).run conn, (err, result) ->
+            if err
+                console.log "[DB] Prediction " + id + " couldn't be updated."
+            else
+                console.log "[DB] Prediction " + id + " updated succesfully."
+                
+module.exports.getPredictionById = (id, cb) ->
+    connectDb (err, conn) ->
+        findElemByFilter(conn, 'predictions', id: id, cb)
+    
 ###*
  * Wrapper function for RethinkDB API `rdb.connect` method
  * to extend it (thinking about error handling) when necessary.
@@ -101,3 +103,17 @@ module.exports.getPredictionsByUserId = (userId, cb) ->
 connectDb = (cb) ->
     rdb.connect {host: dbConfig.host, port: dbConfig.port}, (err, conn) ->
         cb err, conn
+
+findElemByFilter = (conn, table, filterObject, cb) ->
+    rdb.db(dbConfig.db).table(table).filter(filterObject).limit(1).run conn, (err, cursor) ->
+        # Database runtime error
+        if err
+            cb err
+        else
+            cursor.next (err, row) ->
+                # No user matched
+                if err
+                    cb null
+                # Success
+                else
+                    cb null, row

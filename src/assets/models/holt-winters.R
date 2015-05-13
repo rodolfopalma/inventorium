@@ -6,9 +6,8 @@ library(RJSONIO)
 
 getPrediction <- function(jsonObj) {
     o = fromJSON(jsonObj)
-
-    xlsxPath = o$xlsxPath
-    demands = read.xlsx(xlsxPath)
+    xlsxPath = o["xlsxPath"]
+    demands = read.xlsx(xlsxPath, 1)
     # TO DO: flexibilizar frecuencia.
     demandsTimeSeries = ts(demands, frequency = 12)
     demandsHoltWinters = HoltWinters(demandsTimeSeries)
@@ -21,18 +20,18 @@ getPrediction <- function(jsonObj) {
 ### Ventas de shampoo
 #shampoo = read.xlsx("/home/rodolfo/drive/dev/bigsales/model/shampoo.xlsx",1)
 #shampoots = ts(shampoo, frequency = 12)
-#shampootsfc = HoltWinters(shampoots)
-##shampootsfc1 = HoltWinters(shampoots, gamma = FALSE)
-##shampootsfc2 = HoltWinters(shampoots,beta = FALSE, gamma = FALSE)
-#shampootsfc$SSE
-##shampootsfc1$SSE
-##shampootsfc2$SSE
+#shampootsfc = holtwinters(shampoots)
+##shampootsfc1 = holtwinters(shampoots, gamma = false)
+##shampootsfc2 = holtwinters(shampoots,beta = false, gamma = false)
+#shampootsfc$sse
+##shampootsfc1$sse
+##shampootsfc2$sse
 
 #plot(shampootsfc)
 ##plot(shampootsfc1)
 ##plot(shampootsfc2)
 
-#forecasting = forecast.HoltWinters(shampootsfc, h = 12)
+#forecasting = forecast.holtwinters(shampootsfc, h = 12)
 #forecasting
 #plot.forecast(forecasting)
 

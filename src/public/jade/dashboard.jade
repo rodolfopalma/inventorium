@@ -17,8 +17,20 @@ html
                                 h3 #{prediction.name}
                                 .cell-content
                                     if prediction.status == "pending"
-                                        span.text-info.
+                                        p.text-info.
                                             La predicción aún está siendo procesada.
+                                        p.text-info.
+                                            Espera un momento y vuelve a <a href="/dashboard">recargar
+                                            la página</a> para revisar si la predicción
+                                            está lista.
+                                        
+                                    else if prediction.status == "done"
+                                        p.text-success.
+                                            La predicción ha sido procesada.
+                                        p.text-success
+                                            a.btn.btn-success(href="/prediccion/#{prediction.id}", role="button").
+                                                Ver resultados
+                                            
 
                     .col-md-3
                         .cell-wrapper

@@ -81,6 +81,7 @@ module.exports = (grunt) ->
 					{expand: true, flatten: true, src: 'src/assets/js/*', dest: 'public/js/'},
 					{expand: true, flatten: true, src: 'src/assets/i/*', dest: 'public/i/'},
 					{expand: true, flatten: true, src: 'src/assets/fonts/*', dest: 'public/fonts/'}
+                    {expand: true, flatten: true, src: 'src/assets/models/*', dest: 'private/models/'}
 				]
 
 	grunt.registerTask('default', [
