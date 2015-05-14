@@ -185,7 +185,7 @@ app.get '/logout', (req, res) ->
     res.redirect '/'
 
 app.get '/about-us', (req, res) ->
-    res.redirect '/'
+    res.render 'about-us'
 
 validEmail = (email) ->
     re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
