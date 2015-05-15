@@ -16,14 +16,15 @@ html
                     sacarle el máximo provecho a sus inventarios y dejar de perder dinero por malas predicciones.
 
                 if invalidFields
-                    ul.col-md-6.col-md-offset-3.bg-danger.list-unstyled
-                        each invalidField in invalidFields
-                            if invalidField == "inputName"
-                                li Ingrese un nombre válido.
-                            if invalidField == "inputEmail"
-                                li Ingrese un correo electrónico válido.
-                            if invalidField == "inputPassword"
-                                li La contraseñas no coinciden o no son válidas.
+                    div.alert.alert-danger.col-md-6.col-md-offset-3(role="alert")
+                        ul.list-unstyled
+                            each invalidField in invalidFields
+                                if invalidField == "inputName"
+                                    li Ingrese un nombre válido.
+                                if invalidField == "inputEmail"
+                                    li Ingrese un correo electrónico válido.
+                                if invalidField == "inputPassword"
+                                    li Las contraseñas no coinciden o no son válidas.
 
                 form.col-md-6.col-md-offset-3(action="/signup", method="POST")
                     .form-group
@@ -41,4 +42,6 @@ html
                     .form-group
                         button(type="submit", class="btn btn-default") Enviar
 
+        
+        include ./includes/footer.jade
         include ./includes/scripts.jade

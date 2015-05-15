@@ -1,0 +1,19 @@
+footer
+    .container
+        p.lead BigSales - Predictive Model For Stock Management
+
+        ul.list-inline
+            li
+                a(href="/") Inicio
+            if user
+                li
+                    a(href="/dashboard") Dashboard
+            else
+                li
+                    a(href="/signup") Registrarse
+                li
+                    a(href="/login") Ingresar
+
+            li
+                a(href="/about-us") Quiénes Somos
+                

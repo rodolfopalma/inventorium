@@ -1,8 +1,26 @@
 body
-    background #f2f2f2
+    color #242423
+    background #E8EDDF
+
+nav.navbar.navbar-default
+    color #E8EDDF
+    background #242423
+
+    .navbar-brand, li > a
+        color #E8EDDF
+
+    .navbar-brand:hover, li > a:hover
+        color #CFDBD5
 
 #landing_jumbotron
-    background url("../i/jumbotron-bg.jpg") no-repeat center center
+    background-size cover
+    background-repeat no-repeat
+    background-position center center
+
+    .col-md-6
+        color #E8EDDF
+        background rgba(0,0,0,0.75)
+        border-radius 3px
 
     p.button
         text-align center
@@ -15,7 +33,8 @@ body
 #features
     .icon
         text-align center
-
+    .row:nth-child(odd) > .icon
+        color #F5CB5C
     h3
         margin-top 0
         text-align center
@@ -41,3 +60,23 @@ body
 
         .cell-content
             padding 5px 10px
+
+#about_us
+    .col-md-4
+        vertical-align text-top
+
+        img
+            width 150px
+            float left
+            margin-right 10px
+
+        p:nth-of-type(1)
+            font-weight bold
+            margin-top 10px
+
+footer
+    color #E8EDDF
+    background #242423
+    padding-top 30px
+    padding-bottom 20px
+    margin-top 30px
