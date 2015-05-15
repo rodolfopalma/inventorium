@@ -13,7 +13,8 @@ db            = require './lib/db'
 rInterface    = require('./lib/r-interface')
 
 app           = do express
-port          = process.env.port || 2000
+port          = process.env.PORT || 2000
+env           = process.env.NODE_ENV || "dev"
 
 # Static content
 app.use '/static/css', express.static 'public/css'
@@ -25,8 +26,12 @@ app.use '/static/js', express.static 'public/js'
 app.set 'views', path.join(__dirname, "../src/public/jade")
 app.set 'view engine', 'jade'
 
-# Logger
-app.use morgan('dev')
+# Logger and proxy handling
+if env == "dev"
+    app.use morgan('dev')
+else if env == "production"
+    app.set 'trust proxy'
+    app.use morgan 'combined'
 
 # Sessions and flash data
 app.use cookieParser()

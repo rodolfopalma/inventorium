@@ -1,6 +1,6 @@
 {
   "name": "bigsales-web",
-  "version": "0.0.1111",
+  "version": "0.0.111",
   "main": "private/server.js",
   "author": "Rodolfo Palma Otero",
   "license": "MIT",
