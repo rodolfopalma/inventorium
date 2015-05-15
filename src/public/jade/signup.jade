@@ -27,6 +27,7 @@ html
                                     li Las contraseñas no coinciden o no son válidas.
 
                 form.col-md-6.col-md-offset-3(action="/signup", method="POST")
+                    h3 Sus datos personales
                     .form-group
                         label(for="input-name") Ingrese su nombre
                         input(type="text", class="form-control", name="inputName", id="input-name", placeholder="José Pérez")
@@ -39,6 +40,58 @@ html
                     .form-group
                         label(for="input-confirm-password") Confirme su contraseña
                         input(type="password", class="form-control",  name="inputConfirmPassword", id="input-confirm-password")
+
+                    h3 Seleccione un plan
+                    table.table.table-hover.table-bordered
+                        thead
+                            tr
+                                th Característica
+                                th BigSales Silver
+                                th BigSales Gold
+                                th BigSales Platinum
+                        tbody
+                            tr
+                                td Número de Predicciones
+                                td 10
+                                td 50
+                                td Ilimitadas
+                            tr
+                                td Número de Sucursales
+                                td 5
+                                td 10
+                                td Ilimitadas
+                            tr
+                                td Intervalo de Confianza
+                                td 80%
+                                td 90%
+                                td 95%
+                            tr
+                                td Soporte Técnico
+                                td Lun-Vie, 09:00-19:00 hrs.
+                                td Lun-Vie, 09:00-19:00 hrs.
+                                td Lun-Dom, 00:00-24:00 hrs.
+                            tr
+                                td Capacitación
+                                td
+                                    i.fa.fa-check
+                                td
+                                    i.fa.fa-check
+                                td
+                                    i.fa.fa-check
+                            tr
+                                td Precio
+                                td $10.000 / mes
+                                td $50.000 / mes
+                                td $100.000 / mes
+                            tr
+                                td Selecciona un plan
+                                td
+                                    input(type="radio", name="plan", value="silver")
+                                td
+                                    input(type="radio", name="plan", value="gold")                                    
+                                td
+                                    input(type="radio", name="plan", value="platinum")
+
                     .form-group
                         button(type="submit", class="btn btn-default") Enviar
 
