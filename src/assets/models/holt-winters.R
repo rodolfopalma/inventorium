@@ -13,8 +13,8 @@ getPrediction <- function(jsonObj) {
     demandsHoltWinters = HoltWinters(demandsTimeSeries)
     # TO DO: flexibilizar intervalos de predicción.
     demandsForecast = forecast.HoltWinters(demandsHoltWinters, h = 48)
-    
-    return(toJSON(demandsForecast))
+    results = c(demandsForecast, demandsHoltWinters)
+    return(toJSON(results))
 }
 
 ### Ventas de shampoo

@@ -183,6 +183,14 @@ app.get '/prediccion/:id', (req, res) ->
             res.redirect '/dashboard'
             return
         
+        res.render 'prediccion/ver', prediction: prediction
+
+app.get '/prediccion/:id/descargar', (req, res) ->
+    db.getPredictionById req.params.id, (err, prediction) ->
+        if prediction.ownerId != req.user.id || prediction.status == "pending"
+            res.redirect '/dashboard'
+            return
+        
         res.download prediction.results.resultsPath
     
 app.get '/logout', (req, res) ->
