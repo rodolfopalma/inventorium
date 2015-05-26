@@ -155,8 +155,8 @@ html
                 })
                 .y1(function(d) {
                     return yScale(d.upper);
-                }),
-            
+                })
+
             forecastData = [];
 
             upperValues.forEach(function(obj) {
@@ -184,8 +184,19 @@ html
                     "x1": xScale(70),
                     "x2": xScale(70),
                     "y1": yScale(0),
-                    "y2": yScale(maxUpperValue)
+                    "y2": yScale(maxUpperValue),
+                    "id": "hoverLine"
                 })
                 .style("stroke-dasharray", ("3", "3"))
                 .attr("stroke", "black")
                 .attr("stroke-width", "2")
+
+            var tooltip = d3.select(".svg-chart")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0)
+
+            d3.select(".area")
+                .on("mouseover", function(d) {
+                    
+                })
