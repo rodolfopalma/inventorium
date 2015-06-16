@@ -80,5 +80,5 @@ module.exports.getHoltWintersPrediction = (id, xlsx, cb) ->
                 data["resultsPath"] = resultsPath
                 cb id, data
 
-    scriptPath = path.join "private", "models", "holt-winters.R"
+    scriptPath = path.join ".", "private", "models", "holt-winters.R"
     rio.sourceAndEval scriptPath, cfg

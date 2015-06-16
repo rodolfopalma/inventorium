@@ -8,34 +8,22 @@ html
 
         section#dashboard
             .container
-                h1 Predicciones
+                h1 Bodega
                 
                 .row
-                    each prediction, i in predictions
+                    each product, i in products
                         .col-md-3
                             .cell-wrapper
-                                h3 #{prediction.name}
+                                h3 #{product.name}
                                 .cell-content
-                                    if prediction.status == "pending"
-                                        p.text-info.
-                                            La predicción aún está siendo procesada.
-                                        p.text-info.
-                                            Espera un momento y vuelve a <a href="/dashboard">recargar
-                                            la página</a> para revisar si la predicción
-                                            está lista.
-                                        
-                                    else if prediction.status == "done"
-                                        p.text-success.
-                                            La predicción ha sido procesada.
-                                        p.text-success
-                                            a.btn.btn-success(href="/prediccion/#{prediction.id}", role="button").
-                                                Ver resultados
-                                            
+                                    p.text-info
+                                        a.btn.btn-success(href="/producto/#{product.id}", role="button").
+                                            Ver detalles
 
                     .col-md-3
                         .cell-wrapper
                             .cell-content.
-                                Haz click <a href="/prediccion/crear">aquí</a> para crear una predicción.
+                                Haz click <a href="/producto/crear">aquí</a> para agregar un producto a bodega.
 
         
         include ./includes/footer.jade

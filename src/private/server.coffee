@@ -10,7 +10,7 @@ passport      = require 'passport'
 localPassport = require 'passport-local'
 bcrypt        = require 'bcryptjs'
 db            = require './lib/db'
-rInterface    = require('./lib/r-interface')
+rInterface    = require './lib/r-interface'
 
 app           = do express
 port          = process.env.PORT || 2000
@@ -159,34 +159,43 @@ app.get '/dashboard', (req, res) ->
         res.redirect '/login'
         return
     
-    db.getPredictionsByUserId req.user.id, (err, predictions) ->
-        res.render 'dashboard', predictions: predictions
+    db.getProductsByUserId req.user.id, (err, products) ->
+        res.render 'dashboard', products: products
 
-app.get '/prediccion/crear', (req, res) ->
-    res.render 'prediccion/crear'
+app.get '/producto/crear', (req, res) ->
+    res.render 'producto/crear'
 
-app.post '/prediccion/crear', multer(dest: path.join(__dirname, '../', 'uploads')), (req, res) ->
-    prediction =
+app.post '/producto/crear', multer(dest: path.join(__dirname, '../', 'uploads')), (req, res) ->
+    product =
         name: req.body.inputName
         ownerId: req.user.id
         status: 'pending'
         filePath: req.files.inputFile.path
+        initialStock: req.body.inputStock
 
-    db.savePrediction prediction, (err, success, id) ->
+    db.saveProduct product, (err, success, id) ->
         if success
-            rInterface.getHoltWintersPrediction(id, prediction.filePath, db.updatePredictionStatus)
+            rInterface.getHoltWintersPrediction(id, product.filePath, db.savePrediction)
             res.redirect '/dashboard'
 
-app.get '/prediccion/:id', (req, res) ->
-    db.getPredictionById req.params.id, (err, prediction) ->
-        if prediction.ownerId != req.user.id || prediction.status == "pending"
+app.get '/producto/:id', (req, res) ->
+    db.getProductById req.params.id, (err, product) ->
+        if product.ownerId != req.user.id
             res.redirect '/dashboard'
             return
         
-        res.render 'prediccion/ver', prediction: prediction
+        res.render 'producto/ver', {product: product}
+
+app.get '/prediccion/:id', (req, res) ->
+    db.getPredictionByProductId req.params.id, (err, prediction) ->
+        if prediction.ownerId != req.user.id
+            res.redirect '/dashboard'
+            return
+        
+        res.json prediction
 
 app.get '/prediccion/:id/descargar', (req, res) ->
-    db.getPredictionById req.params.id, (err, prediction) ->
+    db.getPredictionByProductId req.params.id, (err, prediction) ->
         if prediction.ownerId != req.user.id || prediction.status == "pending"
             res.redirect '/dashboard'
             return

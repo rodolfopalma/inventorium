@@ -7,6 +7,7 @@ dbConfig =
     db     : process.env.RDB_DB || 'bigsalesWeb'
     tables :
         users: 'id'
+        products: 'id'
         predictions: 'id'
         sessions: 'id'
 
@@ -60,8 +61,19 @@ module.exports.findUserById = (id, cb) ->
 findUserByFilter = (conn, filterObject, cb) ->
     findElemByFilter(conn, 'users', filterObject, cb)
 
+module.exports.saveProduct = (product, cb) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('products').insert(product).run conn, (err, result) ->
+            if err
+                console.log "[DB] Couldn't save product."
+                cb err
+            else
+                console.log "[DB] New product inserted succesfully."
+                cb null, result.inserted == 1, result.generated_keys[0]
 
-module.exports.savePrediction = (prediction, cb) ->
+module.exports.savePrediction = (productId, data) ->
+    data["productId"] = productId
+
     connectDb (err, conn) ->
         rdb.db(dbConfig.db).table('predictions').insert(prediction).run conn, (err, result) ->
             if err
@@ -70,6 +82,18 @@ module.exports.savePrediction = (prediction, cb) ->
             else
                 console.log "[DB] New prediction inserted succesfully."
                 cb null, result.inserted == 1, result.generated_keys[0]
+
+module.exports.getProductsByUserId = (userId, cb) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('products').filter(ownerId: userId).run conn, (err, cursor) ->
+            if err
+                cb err
+            else
+                cursor.toArray (err, results) ->
+                    if err
+                        cb err
+                    else
+                        cb null, results
 
 module.exports.getPredictionsByUserId = (userId, cb) ->
     connectDb (err, conn) ->
@@ -83,9 +107,9 @@ module.exports.getPredictionsByUserId = (userId, cb) ->
                     else
                         cb null, results
 
-module.exports.updatePredictionStatus = (id, values) ->
+module.exports.updatePredictionStatus = (productId, values) ->
     connectDb (err, conn) ->
-        rdb.db(dbConfig.db).table('predictions').filter(id: id).update(status: "done", results: values).run conn, (err, result) ->
+        rdb.db(dbConfig.db).table('predictions').filter(productId: productId).update(status: "done", results: values).run conn, (err, result) ->
             if err
                 console.log "[DB] Prediction " + id + " couldn't be updated."
             else
@@ -94,7 +118,22 @@ module.exports.updatePredictionStatus = (id, values) ->
 module.exports.getPredictionById = (id, cb) ->
     connectDb (err, conn) ->
         findElemByFilter(conn, 'predictions', id: id, cb)
-    
+
+module.exports.getProductById = (id, cb) ->
+    connectDb (err, conn) ->
+        findElemByFilter(conn, 'products', id: id, cb)
+
+module.exports.getPredictionByProductId = (productId, cb) ->
+    connectDb (err, conn) ->
+        rdb.db(dbConfig.db).table('predictions').filter(productId: productId).run conn, (err, cursor) ->
+            if err
+                cb err
+            else
+                cursor.toArray (err, results) ->
+                    if err
+                        cb err
+                    else
+                        cb null, results
 ###*
  * Wrapper function for RethinkDB API `rdb.connect` method
  * to extend it (thinking about error handling) when necessary.
