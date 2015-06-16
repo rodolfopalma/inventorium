@@ -17,3 +17,4 @@
 + Manejo de errores cuando hay errores en db
 + Revisar dependencias
 + ReactJS
++ Error de zippeado
