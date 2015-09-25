@@ -1,0 +1,25 @@
+dataContainer:
+    image: "busybox"
+    volumes:
+        - "/uploads"
+        - "/results"
+
+inventoriumServerContainer:
+    image: "rpalmaotero/inventorium-server"
+    ports:
+        - "5100:5100"
+    volumes_from:
+        - "dataContainer"
+    links:
+        - "dbContainer:db"
+        - "rserveContainer:rserve"
+
+dbContainer:
+    image: "rethinkdb"
+    ports:
+        - "8080:8080"
+
+rserveContainer:
+    image: "rpalmaotero/inventorium-rserve-server"
+    volumes_from:
+        - "dataContainer"
