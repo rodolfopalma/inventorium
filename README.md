@@ -9,5 +9,5 @@ Inventorium's backend is a Node server and a RethinkDB database. Also, we used `
 - RethinkDB >= v2.0.2
 - An instance running of Rserve
 
-## Install
+## Installation
 Clone the repo, then `npm install`, finally `grunt`.
